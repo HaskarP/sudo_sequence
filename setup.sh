@@ -10,4 +10,5 @@ pip3 install -U dash_core_components
 pip3 install -U tensorflow
 pip3 install -U tensorflow-gpu
 pip3 install -U numpy
+pip3 install -U pysam
 deactivate
