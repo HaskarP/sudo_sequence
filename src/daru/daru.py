@@ -1,11 +1,12 @@
 import os
 
 class Record:
-    def __init__(self, day, qname, flags, rname, mapq, cigar, seq, qual):
+    def __init__(self, day, qname, flags, rname, pos, mapq, cigar, seq, qual):
         self.day = day
         self.qname = qname
         self.flags = flags
         self.rname = rname
+        self.pos = pos
         self.mapq = mapq
         self.cigar = cigar
         self.seq = seq
@@ -16,6 +17,7 @@ class Record:
         patch_file.write(str(self.qname))
         patch_file.write(int(self.flags))
         patch_file.write(str(self.rname))
+        patch_file.write(int(self.pos))
         patch_file.write(int(self.mapq))
         patch_file.write(str(self.cigar))
         patch_file.write(str(self.seq))
