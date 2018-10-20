@@ -1,2 +1,4 @@
 #!/bin/bash
-FLASK_ENV=development FLASK_DEBUG=1 FLASK_APP=src/server/__init__.py flask run
+source ./venv/bin/activate
+python3 ./src/server/__init__.py
+deactivate
