@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Interface Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <style type="text/css">
+      body {
+        overflow: hidden; 
+      }
+
+      #patches {
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-sizing: border-box;
+        overflow-y: scroll;
+        padding-top: 10px;
+      }
+
+      #graphs {
+        width: calc(100% - 400px);
+        position: absolute;
+        left: 400px;
+        top: 0;
+      }
+
+      #patches button {
+        width: calc(100% - 10px); 
+        margin: 5px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+      <div id="patches" class="col-sm-4">
+      </div >
+      <div id="graphs" class="col-sm-8">
+      </div>
+
+    <script type="text/javascript">
+      function patch_button(index) {
+        var name = "Patch " + index;
+        var button = document.createElement("BUTTON");
+        var label = document.createTextNode(name);
+        button.appendChild(label);
+        button.classList.add("btn", "btn-primary")
+        return button;
+      }
+
+      setTimeout(function() {
+        var req = new XMLHttpRequest();
+        req.open("GET", "/api/patches/", false);
+        req.onload = function() {
+          var obj = JSON.parse(this.responseText);
+          console.log(obj);
+          var keys = Object.keys(obj);
+          for (var key in keys) {
+            document.getElementById("patches")
+                .appendChild(patch_button(key));
+          }
+        };
+        req.send();
+      }, 0);
+
+      // var url2 = "/api/patch?id=";
+    </script>
+  </body>
+</html>
