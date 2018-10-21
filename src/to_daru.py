@@ -69,4 +69,4 @@ def to_daru(bam_files, daru_filename, index_filename, patch_size):
     daru = Daru(patch_size, len(bam_files), patches)
     daru.write(daru_filename, index_filename)
 
-# to_daru(["./data/M229_Control.bam", "./data/M229_Day3.bam", "./data/M229_Day21.bam", "./data/M229_Day90.bam"], "daru.daru", "daru.idaru", 250)
+to_daru(["./data/M229_Control.bam", "./data/M229_Day3.bam", "./data/M229_Day21.bam", "./data/M229_Day90.bam"], "daru.daru", "daru.idaru", 250)

@@ -102,11 +102,11 @@ def read_index(index_filename):
     byte_count = os.path.getsize(index_filename)
     index_file = open(index_filename, "rb")
 
-    indeces = {} 
+    indices = {} 
 
     for i in range(0, int(byte_count / 8)):
         metric = int.from_bytes(index_file.read(4), byteorder='big')
         index = int.from_bytes(index_file.read(4), byteorder='big')
-        indeces[index] = metric
+        indices[index] = metric
 
-    return indeces
+    return indices
