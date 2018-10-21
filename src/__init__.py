@@ -1,21 +1,13 @@
 from flask import Flask
-from dash import Dash
+from flask import render_template
 import daru
 import json
 import operator
-import dash
-import dash_html_components as html
-import dash_core_components as dcc
 
-server = Flask(__name__)
-app = Dash(__name__, server=server, url_base_pathname='/')
-
-app.layout = html.Div(
-    children=[html.Button('Submit', id='button')]
-)
+app = Flask(__name__)
 
 def json_response(json_string):
-    response = server.response_class(
+    response = app.response_class(
         response=json_string,
         status=200,
         mimetype='application/json'
@@ -23,7 +15,7 @@ def json_response(json_string):
 
     return response
 
-@server.route("/api/patches/")
+@app.route("/api/patches/")
 def patches():
 
     num_patches = 200
@@ -42,15 +34,15 @@ def records_to_json(records):
     record_dicts = []
     for record in records:
         record_dict = {
-        "day"  : record.day,
-        "qname": record.qname,
-        "flags": record.flags,
-        "rname": record.rname,
-        "pos"  : record.pos,
-        "mapq" : record.mapq,
-        "cigar": record.cigar,
-        "seq"  : record.seq,
-        "qual" : record.qual
+            "day"  : record.day,
+            "qname": record.qname,
+            "flags": record.flags,
+            "rname": record.rname,
+            "pos"  : record.pos,
+            "mapq" : record.mapq,
+            "cigar": record.cigar,
+            "seq"  : record.seq,
+            "qual" : record.qual
         }
         record_dicts.append(record_dict)
 
@@ -58,5 +50,9 @@ def records_to_json(records):
 
     return json_response(json_string)
 
+@app.route("/")
+def root():
+    return render_template("index.html")
+
 if __name__ == "__main__":
-    server.run()
+    app.run()
