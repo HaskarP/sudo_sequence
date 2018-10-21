@@ -13,15 +13,15 @@ class Record:
         self.qual = qual
     
     def write(self, patch_file):
-        patch_file.write(int(self.timestamp))
-        patch_file.write(str(self.qname))
-        patch_file.write(int(self.flags))
-        patch_file.write(str(self.rname))
-        patch_file.write(int(self.pos))
-        patch_file.write(int(self.mapq))
-        patch_file.write(str(self.cigar))
-        patch_file.write(str(self.seq))
-        patch_file.write(str(self.qual))
+        patch_file.write(self.day.to_bytes(4, byteorder='big'))
+        patch_file.write(bytes(self.qname, 'utf-8'))
+        patch_file.write(self.flags.to_bytes(4, byteorder='big'))
+        patch_file.write(bytes(self.rname, 'utf-8'))
+        patch_file.write(self.pos.to_bytes(4, byteorder='big'))
+        patch_file.write(self.mapq.to_bytes(4, byteorder='big'))
+        patch_file.write(bytes(self.cigar, 'utf-8'))
+        patch_file.write(bytes(self.seq, 'utf-8'))
+        patch_file.write(bytes(self.qual, 'utf-8'))
 
 class Patch:
     def __init__(self, metric, records):
@@ -29,17 +29,17 @@ class Patch:
         self.records = records
 
     def write(self, patch_file, index_file):
-        index = os.fstat(path_file.fileno()).st_size 
+        index = os.fstat(patch_file.fileno()).st_size 
 
-        index_file.write(int(self.metric))
-        index_file.write(int(index))
+        index_file.write(self.metric.to_bytes(4, byteorder='big'))
+        index_file.write(index.to_bytes(4, byteorder='big'))
 
         for record in self.records:
             record.write(patch_file)
 
 class Daru:
-    def __init__(self, patchsize, days, patches):
-        self.patchsize = patchsize
+    def __init__(self, patch_size, days, patches):
+        self.patch_size = patch_size
         self.days = days
         self.patches = patches
 
@@ -47,7 +47,7 @@ class Daru:
         patch_file = open(patch_filename, "wb")
         index_file = open(index_filename, "wb")
         
-        patch_file.write(int(patchsize))
-        patch_file.write(int(days))
+        patch_file.write(bytes([self.patch_size]))
+        patch_file.write(bytes([self.days]))
         for patch in self.patches:
             patch.write(patch_file, index_file)

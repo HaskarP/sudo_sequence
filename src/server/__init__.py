@@ -5,7 +5,6 @@ import dash
 import dash_html_components as html
 import dash_core_components as dcc
 
-
 server = Flask(__name__)
 app = Dash(__name__, server=server, url_base_pathname='/')
 

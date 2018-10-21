@@ -11,4 +11,6 @@ pip3 install -U tensorflow
 pip3 install -U tensorflow-gpu
 pip3 install -U numpy
 pip3 install -U pysam
+pip3 install -U itertools
+pip3 install -U more-itertools
 deactivate
