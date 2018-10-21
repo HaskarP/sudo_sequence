@@ -68,10 +68,10 @@ class Daru:
 
 def read_string(patch_file):
     chars = []
-    current = int.from_byte(patch_file.read(1), byteorder='big')
+    current = int.from_bytes(patch_file.read(1), byteorder='big')
     while current != 0:
         chars.append(chr(current))
-        current = int.from_byte(patch_file.read(1), byteorder='big')
+        current = int.from_bytes(patch_file.read(1), byteorder='big')
     return "".join(chars)
 
 def read_record(patch_file):
@@ -107,6 +107,6 @@ def read_index(index_filename):
     for i in range(0, int(byte_count / 8)):
         metric = int.from_bytes(index_file.read(4), byteorder='big')
         index = int.from_bytes(index_file.read(4), byteorder='big')
-        self.indeces[index] = metric
+        indeces[index] = metric
 
-    sorted(indeces)
+    return indeces
