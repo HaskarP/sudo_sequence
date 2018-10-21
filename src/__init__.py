@@ -30,6 +30,13 @@ def patches():
 
     return json_response(json_string)
 
+@app.route("/api/patch/<patch_id>")
+def records(patch_id):
+    record_list = daru.read_patch("daru.daru", int(patch_id))
+
+    return records_to_json(record_list)
+
+
 def records_to_json(records):
     record_dicts = []
     for record in records:
