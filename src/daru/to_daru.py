@@ -30,7 +30,7 @@ def records_in_patch(i, patch_start, patch_size, read_iterator):
     return records
 
 def find_score(records):
-    return 0 #TODO
+    return 0
 
 def to_daru(bam_files, daru_filename, index_filename, patch_size):
     read_iterators = list(map(lambda x: peekable(pysam.AlignmentFile(x, "rb").fetch()), bam_files))
@@ -39,23 +39,19 @@ def to_daru(bam_files, daru_filename, index_filename, patch_size):
     patch_base = int(min(map(lambda x: x.peek().reference_start, read_iterators)) / patch_size) * patch_size
 
     while True:
-        failed = 0
         records = []
         for (i, read_iterator) in zip(range(0, len(read_iterators)), read_iterators):
-            try:
-                records.extend(records_in_patch(i, patch_base, patch_size, read_iterator))
-            except StopIteration:
-                failed += 1
-                continue
-        print(patch_base)
-        patch_base += patch_size
-        if len(records) == 0:
-            continue
-        else:
+            records.extend(records_in_patch(i, patch_base, patch_size, read_iterator))
+       
+        print(patch_base, len(records))
+        if len(records) != 0:
             score = find_score(records)
             patch = Patch(score, records)
             patches.append(patch)
-        if failed == len(read_iterators):
+
+        try: 
+            patch_base = int(min(map(lambda x: x.peek().reference_start, read_iterators)) / patch_size) * patch_size
+        except ValueError:
             break
 
     daru = Daru(patch_size, len(bam_files), patches)

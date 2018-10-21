@@ -1,5 +1,3 @@
-import os
-
 class Record:
     def __init__(self, day, qname, flags, rname, pos, mapq, cigar, seq, qual):
         self.day = day
@@ -29,7 +27,7 @@ class Patch:
         self.records = records
 
     def write(self, patch_file, index_file):
-        index = os.fstat(patch_file.fileno()).st_size 
+        index = patch_file.tell()
 
         index_file.write(self.metric.to_bytes(4, byteorder='big'))
         index_file.write(index.to_bytes(4, byteorder='big'))
