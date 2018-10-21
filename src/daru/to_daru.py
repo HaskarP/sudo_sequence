@@ -4,6 +4,7 @@ from daru import *
 from more_itertools import peekable
 from functools import reduce
 import operator
+import numpy
 
 def records_in_patch(i, patch_start, patch_size, read_iterator):
     records = []
@@ -30,7 +31,18 @@ def records_in_patch(i, patch_start, patch_size, read_iterator):
     return records
 
 def find_score(records):
-    return 0
+    counts = {}
+    for r in records:
+        if r.day in counts:
+            counts.update({r.day: counts.get(r.day) + 1})
+        else:
+            counts.update({r.day: 1})
+
+    count_values = list(counts.values())
+
+    variance = numpy.var(count_values)
+
+    return int(variance)
 
 def to_daru(bam_files, daru_filename, index_filename, patch_size):
     read_iterators = list(map(lambda x: peekable(pysam.AlignmentFile(x, "rb").fetch()), bam_files))
