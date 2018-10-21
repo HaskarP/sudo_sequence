@@ -38,6 +38,25 @@ def patches():
 
     return json_response(json_string)
 
+def records_to_json(records):
+    record_dicts = []
+    for record in records:
+        record_dict = {
+        "day"  : record.day,
+        "qname": record.qname,
+        "flags": record.flags,
+        "rname": record.rname,
+        "pos"  : record.pos,
+        "mapq" : record.mapq,
+        "cigar": record.cigar,
+        "seq"  : record.seq,
+        "qual" : record.qual
+        }
+        record_dicts.append(record_dict)
+
+    json_string = json.dumps(record_dicts)
+
+    return json_response(json_string)
 
 if __name__ == "__main__":
     server.run()
